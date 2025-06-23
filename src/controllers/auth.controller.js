@@ -19,8 +19,8 @@ export async function signup(req,res){
     if(existingUser){
         return res.status(400).json({message:"Emsil is already exists use a diffrent one"});
     }
-    const idx = Math.floor(Math.random()*100) +1;
-    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
+    // const idx = Math.floor(Math.random()*100) +1;
+    const randomAvatar = `https://i.pravatar.cc/100`;
 
     const newUser = await User.create({
         email,
@@ -35,7 +35,7 @@ export async function signup(req,res){
             name: newUser.fullName,
             image: newUser.profilePic || "",
         })
-        console.log(`Stream user created for ${newUser.fullName}`)
+        // console.log(`Stream user created for ${newUser.fullName}`)
     } catch (error) {
         console.log("Error creating stream user : " , error)
     }
@@ -53,7 +53,7 @@ export async function signup(req,res){
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
     });
-
+    console.log("signup successfull.....")
     res.status(201).json({success: true, user: newUser});
 
 
@@ -97,6 +97,8 @@ export async function login(req, res) {
         const userWithoutPassword = user.toObject();
         delete userWithoutPassword.password;
 
+        console.log("Login sussfull....")
+
         res.status(200).json({ 
             success: true, 
             user: userWithoutPassword 
@@ -109,6 +111,7 @@ export async function login(req, res) {
 
 export function logout(req,res){
     res.clearCookie("jwt")
+        console.log("Logout sussfull.....")
     res.status(200).json({success: true, message: "Logout successful"})
 }
 
@@ -144,7 +147,7 @@ export async function onboard(req, res) {
         } catch (error) {
             console.log("Error updating Stream user during onboarding: ", error.message)
         }
-
+        console.log("onboarding sussfull.....")
         res.status(200).json({success: true, user: updateUser})
     } catch (error) {
         console.error("Onboarding error:", error)
